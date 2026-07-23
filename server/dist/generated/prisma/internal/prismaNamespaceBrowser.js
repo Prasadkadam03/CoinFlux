@@ -39,8 +39,7 @@ export const JsonNull = runtime.JsonNull;
  */
 export const AnyNull = runtime.AnyNull;
 export const ModelName = {
-    User: 'User',
-    Post: 'Post'
+    User: 'User'
 };
 /*
  * Enums
@@ -54,14 +53,9 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export const UserScalarFieldEnum = {
     id: 'id',
     email: 'email',
-    name: 'name'
-};
-export const PostScalarFieldEnum = {
-    id: 'id',
-    title: 'title',
-    content: 'content',
-    published: 'published',
-    authorId: 'authorId'
+    name: 'name',
+    username: 'username',
+    password: 'password'
 };
 export const SortOrder = {
     asc: 'asc',
