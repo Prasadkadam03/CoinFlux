@@ -19,7 +19,7 @@ export interface PrismaClientConstructor {
    */
     new <Options extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions, LogOpts extends LogOptions<Options> = LogOptions<Options>, OmitOpts extends Prisma.PrismaClientOptions['omit'] = Options extends {
         omit: infer U;
-    } ? U : Prisma.PrismaClientOptions['omit'], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs>(options: Prisma.Subset<Options, Prisma.PrismaClientOptions>): PrismaClient<LogOpts, OmitOpts, ExtArgs>;
+    } ? U : Prisma.PrismaClientOptions['omit'], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs>(options: Prisma.PrismaClientConstructorArgs<Options>): PrismaClient<LogOpts, OmitOpts, ExtArgs>;
 }
 /**
  * ## Prisma Client
@@ -36,7 +36,7 @@ export interface PrismaClientConstructor {
  *
  * Read more in our [docs](https://pris.ly/d/client).
  */
-export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out OmitOpts extends Prisma.PrismaClientOptions['omit'] = undefined, in out ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> {
+export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out OmitOpts extends Prisma.PrismaClientOptions['omit'] = Prisma.PrismaClientOptions['omit'], in out ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> {
     [K: symbol]: {
         types: Prisma.TypeMap<ExtArgs>['other'];
     };
@@ -126,17 +126,6 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
   * ```
   */
     get user(): Prisma.UserDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
-    /**
-     * `prisma.post`: Exposes CRUD operations for the **Post** model.
-      * Example usage:
-      * ```ts
-      * // Fetch zero or more Posts
-      * const posts = await prisma.post.findMany()
-      * ```
-      */
-    get post(): Prisma.PostDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
 }

@@ -37,12 +37,12 @@ export const Sql = runtime.Sql;
 export const Decimal = runtime.Decimal;
 export const getExtensionContext = runtime.Extensions.getExtensionContext;
 /**
- * Prisma Client JS version: 7.8.0
- * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
+ * Prisma Client JS version: 7.9.0
+ * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 export const prismaVersion = {
-    client: "7.8.0",
-    engine: "3c6e192761c0362d496ed980de936e2f3cebcd3a"
+    client: "7.9.0",
+    engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
 };
 export const NullTypes = {
     DbNull: runtime.NullTypes.DbNull,
@@ -68,8 +68,7 @@ export const JsonNull = runtime.JsonNull;
  */
 export const AnyNull = runtime.AnyNull;
 export const ModelName = {
-    User: 'User',
-    Post: 'Post'
+    User: 'User'
 };
 /**
  * Enums
@@ -83,14 +82,9 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export const UserScalarFieldEnum = {
     id: 'id',
     email: 'email',
-    name: 'name'
-};
-export const PostScalarFieldEnum = {
-    id: 'id',
-    title: 'title',
-    content: 'content',
-    published: 'published',
-    authorId: 'authorId'
+    name: 'name',
+    username: 'username',
+    password: 'password'
 };
 export const SortOrder = {
     asc: 'asc',
