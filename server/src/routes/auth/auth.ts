@@ -15,9 +15,11 @@ router.post("/login", async (req: Request, res: Response) => {
         email: email,
       },
     });
+    if (!User) return res.status(404).send("user not exist!");
     const hashpassword = await bcrypt.compare(password, User?.password);
 
-    if (!hashpassword) return res.status(411);
+    if (!hashpassword)
+      return res.status(411).json({ message: "Invalid credentials" });
 
     const secrete: any = process.env.JWT_SECRETE;
     const token: string = jsonwebtoken.sign({ id: User?.id }, secrete, {
@@ -36,6 +38,13 @@ router.post("/signup", async (req: Request, res) => {
     const { email, name, password } = req.body;
 
     const hashpassword = await bcrypt.hash(password, 10);
+
+    const isUserExist: any = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (isUserExist) return res.status(409).send("user already exist!!");
 
     const User: any = await prisma.user.create({
       data: {
