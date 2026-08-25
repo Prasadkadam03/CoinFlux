@@ -1,51 +1,59 @@
 import express from "express";
+import type { Request, Response } from "express";
 import { prisma } from "../../../lib/prisma.js";
 import bcrypt from "bcrypt";
+import jsonwebtoken from "jsonwebtoken";
 
 const router = express.Router();
 
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+router.post("/login", async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-  const User: any = await prisma.user.findUnique({
-    where: {
-      email: email,
-    },
-  });
+    const User: any = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    const hashpassword = await bcrypt.compare(password, User?.password);
 
-  if (!User) res.status(404).send("email not registered yet!! please do signup");
+    if (!hashpassword) return res.status(411);
 
-  const hashpassword = await bcrypt.compare(password, User?.password);
+    const secrete: any = process.env.JWT_SECRETE;
+    const token: string = jsonwebtoken.sign({ id: User?.id }, secrete, {
+      expiresIn: "1d",
+    });
 
-  if (!hashpassword) res.status(411).send("password is incorrect");
-
-  res.status(200).send("user login");
+    res.status(200).json({ message: "User login successfull", token });
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("something went wrong!!");
+  }
 });
 
-router.post("/signup", async (req, res) => {
-  const { email, name, password } = req.body;
+router.post("/signup", async (req: Request, res) => {
+  try {
+    const { email, name, password } = req.body;
 
-  const isUserExist = await prisma.user.findUnique({
-    where: {
-      email: email,
-    },
-  });
+    const hashpassword = await bcrypt.hash(password, 10);
 
-  if (isUserExist) res.send("User already exist");
+    const User: any = await prisma.user.create({
+      data: {
+        email: email,
+        name: name,
+        password: hashpassword,
+      },
+    });
+    const secrete: any = process.env.JWT_SECRETE;
+    const token: string = jsonwebtoken.sign({ id: User?.id }, secrete, {
+      expiresIn: "1d",
+    });
 
-  const hashpassword = await bcrypt.hash(password, 10);
-
-  const success = await prisma.user.create({
-    data: {
-      email: email,
-      name: name,
-      password: hashpassword,
-    },
-  });
-
-  if (!success) res.status(411).send("error");
-
-  res.status(200).send("user created successfully");
+    res.status(200).json({ message: "user created successfully", token });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "something went wrong!!" });
+  }
 });
 
 export default router;
