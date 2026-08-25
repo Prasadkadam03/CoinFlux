@@ -17,4 +17,5 @@ model User {
   name  String? @db.VarChar(30)
   username String? @unique @db.VarChar(15)
   password String  @default("null")
+  createdAt DateTime  @default(now())
 } 
